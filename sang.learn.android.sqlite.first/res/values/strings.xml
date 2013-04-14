@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">App With SQLite</string>
+    <string name="app_name">Labu</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="button_add">Add New</string>
-    <string name="button_delete">Delete First</string>
-    <string name="title_activity_song_list">SongList</string>
-
+    <string name="hello_world">Hello world!</string>    
+    <string name="title_activity_song_list">La te</string>
+    <string name="title_activity_song_display">La</string>
+    <string name="song_title_song_display">Song Title</string>
+    <string name="song_lyric_song_display">Song Lyric</string>
+	<string name="search_text">Search</string>
 </resources>

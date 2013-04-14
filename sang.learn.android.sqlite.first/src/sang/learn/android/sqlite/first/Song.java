@@ -9,8 +9,11 @@ public class Song {
 	private String tune;
 	private String bibleref;
 	private String lyric;
+	private String categoryname;
 	private int categoryid;
+	private String writername;
 	private int writerid;
+	private String songbookname;
 	private int songbookid;
 	
 	public int getId() {
@@ -83,5 +86,23 @@ public class Song {
 	@Override
 	public String toString(){
 		return name;
+	}
+	public String getCategoryname() {
+		return categoryname;
+	}
+	public void setCategoryname(String categoryname) {
+		this.categoryname = categoryname;
+	}
+	public String getWritername() {
+		return writername;
+	}
+	public void setWritername(String writername) {
+		this.writername = writername;
+	}
+	public String getSongbookname() {
+		return songbookname;
+	}
+	public void setSongbookname(String songbookname) {
+		this.songbookname = songbookname;
 	}
 }

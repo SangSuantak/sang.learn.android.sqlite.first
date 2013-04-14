@@ -26,6 +26,10 @@
             android:name="sang.learn.android.sqlite.first.SongList"
             android:label="@string/title_activity_song_list" >
         </activity>
+        <activity
+            android:name="sang.learn.android.sqlite.first.SongDisplay"
+            android:label="@string/title_activity_song_display" >
+        </activity>
     </application>
 
 </manifest>

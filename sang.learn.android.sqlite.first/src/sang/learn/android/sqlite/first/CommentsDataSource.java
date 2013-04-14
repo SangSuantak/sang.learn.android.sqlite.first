@@ -41,7 +41,7 @@ public class CommentsDataSource extends SQLiteAssetHelper {
 	public List<Song> getSongs(int songbookid){
 		SQLiteDatabase db = getReadableDatabase();
 		
-		String query = "SELECT _id, name "
+		String query = "SELECT _id, name, songnumber "
 				+ "FROM songs "
 				+ "WHERE songbookid = " + songbookid;
 		
@@ -64,6 +64,25 @@ public class CommentsDataSource extends SQLiteAssetHelper {
 		return songs;
 	}
 	
+	public Song getSong(int songid){
+		SQLiteDatabase db = getReadableDatabase();
+		String query = "SELECT _id, name, songnumber, lyric, songbookid "
+				+ "FROM songs "
+				+ "WHERE _id = " + songid;
+		
+		Cursor cursor = db.rawQuery(query, null);
+		cursor.moveToFirst();
+		
+		Song song = new Song();
+		song.setId(cursor.getInt(0));
+		song.setName(cursor.getString(1));
+		song.setSongnumber(cursor.getInt(2));
+		song.setLyric(cursor.getString(3));
+		song.setSongbookid(cursor.getInt(4));
+		cursor.close();		
+		return song;		
+	}
+	
 	public SongBook cursorToSongBook(Cursor cursor){
 		SongBook songBook = new SongBook();
 		songBook.setId(cursor.getInt(0));
@@ -75,6 +94,7 @@ public class CommentsDataSource extends SQLiteAssetHelper {
 		Song song = new Song();
 		song.setId(cursor.getInt(0));
 		song.setName(cursor.getString(1));
+		song.setSongnumber(cursor.getInt(2));
 		return song;
 	}
 	

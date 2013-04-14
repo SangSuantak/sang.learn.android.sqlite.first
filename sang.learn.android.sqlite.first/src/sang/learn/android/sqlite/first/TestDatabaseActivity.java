@@ -1,14 +1,14 @@
 package sang.learn.android.sqlite.first;
 
 import java.util.List;
-import android.annotation.SuppressLint;
-import android.app.ActivityOptions;
+
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class TestDatabaseActivity extends ListActivity {
 
@@ -17,6 +17,7 @@ public class TestDatabaseActivity extends ListActivity {
 	private ArrayAdapter<SongBook> adapter;
 	
 	public static final String SONGBOOK_ID = "sang.learn.android.sqlite.first.SONGBOOKID";
+	public static final String SONGBOOK_NAME = "sang.learn.android.sqlite.first.SONGBOOKNAME";
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class TestDatabaseActivity extends ListActivity {
 						
 		Intent intent = new Intent(this, SongList.class);
 		intent.putExtra(SONGBOOK_ID, songBook.getId());
+		intent.putExtra(SONGBOOK_NAME, ((TextView)view).getText());
 		
 		/*
 		ActivityOptions options = ActivityOptions.makeScaleUpAnimation(
@@ -84,7 +86,7 @@ public class TestDatabaseActivity extends ListActivity {
 		*/
 						
 		startActivity(intent);
-		overridePendingTransition(R.anim.anim_in, R.anim.anim_out);
+		//overridePendingTransition(R.anim.anim_in, R.anim.anim_out);
 		//Toast.makeText(getBaseContext(), Integer.toString(songBook.getId()), Toast.LENGTH_SHORT).show();
 	}
 	
