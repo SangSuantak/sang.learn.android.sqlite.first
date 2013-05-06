@@ -38,12 +38,14 @@ public class CommentsDataSource extends SQLiteAssetHelper {
 		return songBooks;
 	}	
 	
-	public List<Song> getSongs(int songbookid){
+	public List<Song> getSongs(int songbookid, String songFirstChar){
 		SQLiteDatabase db = getReadableDatabase();
 		
-		String query = "SELECT _id, name, songnumber "
-				+ "FROM songs "
-				+ "WHERE songbookid = " + songbookid;
+		String query = "SELECT _id, name, songnumber"
+				+ " FROM songs "
+				+ " WHERE songbookid = " + songbookid 
+				+ " AND substr(name, 1, 1) = '" + songFirstChar + "'"
+				+ " ORDER BY name";
 		
 		//SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 		//String[] sqlSelect = {"_id", "name"};
@@ -83,6 +85,68 @@ public class CommentsDataSource extends SQLiteAssetHelper {
 		return song;		
 	}
 	
+	public int getSongIdByNumber(int songNumber, int songBookId){
+		SQLiteDatabase db = getReadableDatabase();
+		String query = "SELECT _id "
+				+ "FROM songs "
+				+ "WHERE songnumber = " + songNumber + " AND songbookid = " + songBookId;
+		
+		Cursor cursor = db.rawQuery(query, null);
+		cursor.moveToFirst();
+		
+		int songId = cursor.getInt(0);
+		
+		//Song song = new Song();
+		//song.setId(cursor.getInt(0));
+		//song.setName(cursor.getString(1));
+		//song.setSongnumber(cursor.getInt(2));
+		//song.setLyric(cursor.getString(3));
+		//song.setSongbookid(cursor.getInt(4));
+		cursor.close();		
+		return songId;		
+	}
+	
+	public List<Song> getMatchingSongs(String queryToMatch){
+		SQLiteDatabase db = getReadableDatabase();
+		
+		String query = "SELECT _id, name, songnumber "
+				+ "FROM songs "
+				+ "WHERE name LIKE '%" + queryToMatch + "%' "
+				+ "ORDER BY name";
+				
+		Cursor cursor = db.rawQuery(query, null);
+		cursor.moveToFirst();
+		
+		List<Song> songs = new ArrayList<Song>();
+		while(!cursor.isAfterLast()){
+			Song song = cursorToSong(cursor);
+			songs.add(song);
+			cursor.moveToNext();
+		}
+		cursor.close();		
+		return songs;
+	}
+	
+	public List<SongFirstChar> getSongFirstChars(int songBookId) {
+		SQLiteDatabase db = getReadableDatabase();
+		
+		String query = "SELECT substr(name, 1, 1) AS FirstChar, songbookid, COUNT(substr(name,1,1)) AS Occurence"
+				+ " FROM songs WHERE songbookid = " + songBookId
+				+ " GROUP BY substr(name, 1,1) ORDER BY substr(name, 1,1);";
+				
+		Cursor cursor = db.rawQuery(query, null);
+		cursor.moveToFirst();
+		
+		List<SongFirstChar> songFirstChars = new ArrayList<SongFirstChar>();
+		while(!cursor.isAfterLast()){
+			SongFirstChar objSongFirstChar = cursorToSongFirstChar(cursor);
+			songFirstChars.add(objSongFirstChar);
+			cursor.moveToNext();
+		}
+		cursor.close();		
+		return songFirstChars;
+	}
+	
 	public SongBook cursorToSongBook(Cursor cursor){
 		SongBook songBook = new SongBook();
 		songBook.setId(cursor.getInt(0));
@@ -96,6 +160,14 @@ public class CommentsDataSource extends SQLiteAssetHelper {
 		song.setName(cursor.getString(1));
 		song.setSongnumber(cursor.getInt(2));
 		return song;
+	}
+	
+	public SongFirstChar cursorToSongFirstChar(Cursor cursor) {
+		SongFirstChar objFirstChar = new SongFirstChar();
+		objFirstChar.setSongFirstChar(cursor.getString(0));
+		objFirstChar.setSongBookId(cursor.getInt(1));		
+		objFirstChar.setSongCount(cursor.getInt(2));
+		return objFirstChar;
 	}
 	
 }
